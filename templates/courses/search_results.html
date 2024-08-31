@@ -1,0 +1,19 @@
+
+{% extends 'courses/base.html' %}
+{% load static %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+    <h1>Search Results</h1>
+    {% if query %}
+        <p>Showing results for: {{ query }}</p>
+    {% endif %}
+    
+    {% for course in courses %}
+        <h2><a href="{% url 'course_detail' course.id %}">{{ course.title }}</a></h2>
+        <p>{{ course.description|truncatewords:30 }}</p>
+    {% empty %}
+        <p>No courses found.</p>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,41 @@
+
+{% extends 'courses/base.html' %}
+
+{% load static %}
+
+{% block title %}{{ course.title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ course.title }}</h1>
+    <p>{{ course.description }}</p>
+    
+    <!-- Modules -->
+    <h2>Modules</h2>
+    <ul>
+        {% for module in modules %}
+            <li><a href="{% url 'module_detail' module.id %}">{{ module.title }}</a></li>
+        {% empty %}
+            <li>No modules available for this course.</li>
+        {% endfor %}
+    </ul>
+    
+    <!-- Reviews -->
+    <h2>Reviews</h2>
+    {% for review in reviews %}
+        <div>
+            <p>Rating: {{ review.rating }}/5</p>
+            <p>{{ review.review_text }}</p>
+            <p>By {{ review.user.username }} on {{ review.created_at }}</p>
+        </div>
+    {% empty %}
+        <p>No reviews yet.</p>
+    {% endfor %}
+    
+    <!-- Review Form -->
+    <h3>Add a Review</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit Review</button>
+    </form>
+{% endblock %}

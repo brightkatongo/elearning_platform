@@ -1,0 +1,41 @@
+{% load static %}
+{% extends 'courses/base.html' %}
+
+{% block title %}{{ module.title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ module.title }}</h1>
+    <div>{{ module.content|safe }}</div>
+    
+    <!-- Video Content -->
+    {% if module.video_url %}
+        <h2>Video Content</h2>
+        <iframe width="560" height="315" src="{{ module.video_url }}" frameborder="0" allowfullscreen></iframe>
+    {% endif %}
+    
+    <!-- Downloadable Resource -->
+    {% if module.resource_file %}
+        <h2>Downloadable Resource</h2>
+        <a href="{{ module.resource_file.url }}" download>Download Resource</a>
+    {% endif %}
+
+    <!-- Quizzes -->
+    {% if module.quiz_set.exists %}
+        <h2>Quizzes</h2>
+        <ul>
+            {% for quiz in module.quiz_set.all %}
+                <li><a href="{% url 'quiz' quiz.id %}">{{ quiz.title }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- Module Completion -->
+    {% if not progress.completed %}
+        <form action="{% url 'mark_module_complete' module.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Mark as Complete</button>
+        </form>
+    {% else %}
+        <p>Module completed!</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,11 @@
+
+{% extends 'courses/base.html' %}
+{% load static %}
+
+{% block title %}Quiz Result{% endblock %}
+
+{% block content %}
+    <h1>Quiz Result</h1>
+    <p>You scored {{ score }} out of {{ quiz.question_set.count }} ({{ percentage|floatformat:2 }}%)</p>
+    <a href="{% url 'module_detail' quiz.module.id %}">Back to Module</a>
+{% endblock %}
